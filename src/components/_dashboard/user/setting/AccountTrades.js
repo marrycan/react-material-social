@@ -16,35 +16,43 @@ import {
 
 import AccountImportsTable from "./AccountImportsTable";
 
+import { DateRangePicker } from 'react-date-range';
+
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
 export default function Account() {
 
   const [confirmDialog, setConfirmDialog] = React.useState(false);
 
+  const handleSelect = (ranges) => {
+    alert("start date:" + ranges.selection.startDate + "end date:" + ranges.selection.endDate)
+  }
+
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  }
+
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={7}>
+      <Grid item xs={12} md={6}>
         <AccountImportsTable />
       </Grid>
-      <Grid item xs={12} md={5}>
+      <Grid item xs={12} md={6}>
         <Card sx={{ p: 3 }}>
           <Typography >Delete Orders</Typography>
           <br />
           <Grid container spacing={3} alignItems="center">
-            <Grid item xs={9}>
-              <TextField
-                select
-                fullWidth
-                label="Date"
-                placeholder="Date"
-                SelectProps={{ native: true }}
-              >
-                <option value="" />
-                <option value="1">1 day</option>
-                <option value="7">7 days</option>
-                <option value="30">1 month</option>
-              </TextField>
+            <Grid item xs={12} sx={{ justifyContent: 'center', display: 'flex' }}>
+              <DateRangePicker
+                style={{ borderRadius: 5 }}
+                ranges={[selectionRange]}
+                onChange={handleSelect}
+              />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
               <Button
                 onClick={() => setConfirmDialog(true)}
                 variant="contained"

@@ -26,13 +26,10 @@ export default function AccountMisc() {
         <Grid item xs={12} md={6}>
           <AccountCurrencyCard data={myProfile.currency ? myProfile.currency : ""} />
         </Grid>
-      </Grid>
-      <br />
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <AccountThemeSetting />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <AccountTags data={myProfile.tags ? myProfile.tags : []} />
         </Grid>
       </Grid>

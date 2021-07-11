@@ -1,11 +1,13 @@
+import React from "react";
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Switch, Container, Typography } from '@material-ui/core';
+import { Box, Grid, Switch, Container, Typography, Divider } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { PricingPlanCard } from '../components/_external-pages/pricing';
+import PricingFeaturesTable from "../components/PricingFeaturesTable";
 
-const PLANS = [
+const month_plans = [
   {
     subscription: 'basic',
     price: 10,
@@ -44,6 +46,45 @@ const PLANS = [
   }
 ];
 
+const year_plans = [
+  {
+    subscription: 'basic',
+    price: 100,
+    lists: [
+      { text: '3 prototypes' },
+      { text: '3 boards' },
+      { text: 'Up to 5 team members' },
+      { text: 'Advanced security' },
+      { text: 'Permissions & workflows' }
+    ],
+    labelAction: 'choose basic'
+  },
+  {
+    subscription: 'starter',
+    price: 200,
+    lists: [
+      { text: '3 prototypes' },
+      { text: '3 boards' },
+      { text: 'Up to 5 team members' },
+      { text: 'Advanced security' },
+      { text: 'Permissions & workflows' }
+    ],
+    labelAction: 'choose starter'
+  },
+  {
+    subscription: 'premium',
+    price: 300,
+    lists: [
+      { text: '3 prototypes' },
+      { text: '3 boards' },
+      { text: 'Up to 5 team members' },
+      { text: 'Advanced security' },
+      { text: 'Permissions & workflows' }
+    ],
+    labelAction: 'choose premium'
+  }
+];
+
 const RootStyle = styled(Page)(({ theme }) => ({
   minHeight: '100%',
   backgroundColor: theme.palette.background.body,
@@ -54,6 +95,8 @@ const RootStyle = styled(Page)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Pricing() {
+  const [paymentFlag, setPaymentFlag] = React.useState(false);
+
   return (
     <RootStyle title="Pricing | Minimal-UI">
       <Container maxWidth="lg">
@@ -76,7 +119,7 @@ export default function Pricing() {
             <Typography variant="overline" sx={{ mr: 1.5 }}>
               MONTHLY
             </Typography>
-            <Switch />
+            <Switch value={paymentFlag} onChange={(e) => setPaymentFlag(e.target.checked)} />
             <Typography variant="overline" sx={{ ml: 1.5 }}>
               YEARLY (save 10%)
             </Typography>
@@ -85,18 +128,25 @@ export default function Pricing() {
             * Plus applicable taxes
           </Typography>
         </Box>
-
-        <Grid container sx={{ justifyContent: 'center' }}>
-          <Grid item xs={12} md={3}>
-            <PricingPlanCard card={PLANS[0]} index={0} />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <PricingPlanCard card={PLANS[1]} index={1} />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <PricingPlanCard card={PLANS[2]} index={2} />
-          </Grid>
-        </Grid>
+        {
+          paymentFlag ?
+            <Grid container sx={{ justifyContent: 'center', marginTop: 5 }}>
+              {year_plans.map((plan, index) =>
+                <Grid item xs={12} md={3}>
+                  <PricingPlanCard card={plan} index={index} />
+                </Grid>
+              )}
+            </Grid>
+            :
+            <Grid container sx={{ justifyContent: 'center', marginTop: 5 }}>
+              {month_plans.map((plan, index) =>
+                <Grid item xs={12} md={3}>
+                  <PricingPlanCard card={plan} index={index} />
+                </Grid>
+              )}
+            </Grid>
+        }
+        <PricingFeaturesTable />
       </Container>
     </RootStyle>
   );

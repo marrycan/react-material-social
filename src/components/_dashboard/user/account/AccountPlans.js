@@ -13,6 +13,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { Box, Grid, Switch, Container, Typography } from '@material-ui/core';
 import { varFadeIn } from '../../../animate'
+import PricingFeaturesTable from "../../../PricingFeaturesTable";
 
 //redux
 import { useSelector, useDispatch } from '../../../../redux/store';
@@ -136,7 +137,7 @@ export default function AccountPlansDialog(props) {
                                 </Grid>
                             </motion.div>
                     }
-
+                    <PricingFeaturesTable />
                 </Container>
             </DialogContent>
         </Dialog>

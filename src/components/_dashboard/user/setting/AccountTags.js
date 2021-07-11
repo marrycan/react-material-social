@@ -1,18 +1,17 @@
-import React from 'react';
+import * as Yup from "yup";
 import { useSnackbar } from "notistack";
-import Chip from '@material-ui/core/Chip';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import React from "react";
+import { Form, FormikProvider, useFormik } from "formik";
 
 // material
 import {
+  Box,
   Grid,
   Card,
-  TextField,
+  Stack,
+  TextField
 } from "@material-ui/core";
 import { LoadingButton } from "@material-ui/lab";
-
-//utils
-import { fb_UpdateTagsOfUserById } from "../../../../utils/firebaseRequest";
 
 // hooks
 import useAuth from "../../../../hooks/useAuth";
@@ -21,84 +20,83 @@ import useAuth from "../../../../hooks/useAuth";
 import { useDispatch } from "../../../../redux/store";
 import { getProfile } from "../../../../redux/slices/user"
 
-export default function AccountTags({ data }) {
-  const fixedOptions = [];
-  const dispatch = useDispatch();
-  const [value, setValue] = React.useState(data);
-  const [loading, setLoading] = React.useState(false);
-  const { user } = useAuth();
-  const { enqueueSnackbar } = useSnackbar();
+//utils
+import { fb_AddTagsOfUserById } from "../../../../utils/firebaseRequest";
 
-  const handleSave = async () => {
-    setLoading(true);
-    try {
-      await fb_UpdateTagsOfUserById(user.id, value);
-      dispatch(getProfile(user.id));
-      enqueueSnackbar("Update success", { variant: "success" });
-    }
-    catch (error) {
-      enqueueSnackbar("Update failed", { variant: "error" });
-    }
-    setLoading(false);
-  }
+import AccountTagsTable from "./AccountTagsTable";
+
+// ----------------------------------------------------------------------
+
+export default function AccountGeneral() {
+  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+
+  const UserAccountSchema = Yup.object().shape({
+    tag: Yup.string().required("Tag is required")
+  });
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      tag: ""
+    },
+
+    validationSchema: UserAccountSchema,
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        await fb_AddTagsOfUserById(user.id, values);
+        dispatch(getProfile(user.id));
+        setSubmitting(false);
+        resetForm();
+        enqueueSnackbar("Added Tag successfully!", { variant: "success" });
+      } catch (error) {
+        enqueueSnackbar("Failed in addding new Tag", { variant: "error" });
+      }
+    },
+  });
+
+  const {
+    errors,
+    touched,
+    isSubmitting,
+    handleSubmit,
+    getFieldProps,
+  } = formik;
 
   return (
-    <Card sx={{ p: 3 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Autocomplete
-            fullWidth
-            multiple
-            id="fixed-tags-demo"
-            defaultValue={data}
-            value={value}
-            onChange={(event, newValue) => {
-              setValue([
-                ...fixedOptions,
-                ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
-              ]);
-            }}
-            options={tagItems}
-            getOptionLabel={(option) => option}
-            renderTags={(tagValue, getTagProps) =>
-              tagValue.map((option, index) => (
-                <Chip
-                  label={option}
-                  {...getTagProps({ index })}
-                  disabled={fixedOptions.indexOf(option) !== -1}
+    <Grid item xs={12}>
+      <FormikProvider value={formik}>
+        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+          <Card sx={{ p: 3 }}>
+            <Stack spacing={{ xs: 2, md: 3 }}>
+              <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+                <TextField
+                  fullWidth
+                  label="Tag"
+                  placeholder="Tag"
+                  {...getFieldProps("tag")}
+                  error={Boolean(touched.tag && errors.tag)}
+                  helperText={touched.tag && errors.tag}
                 />
-              ))
-            }
-            renderInput={(params) => (
-              <TextField {...params} label="Tags" variant="outlined" placeholder="Tags" />
-            )}
-          />
-
-        </Grid>
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <LoadingButton
-            variant="contained"
-            loading={loading}
-            onClick={handleSave}
-          >
-            Save Tags
-          </LoadingButton>
-        </Grid>
-      </Grid>
-    </Card>
+              </Stack>
+            </Stack>
+            <Box
+              sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
+            >
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
+                Add Tag
+              </LoadingButton>
+            </Box>
+          </Card>
+        </Form>
+      </FormikProvider>
+      <br />
+      <AccountTagsTable />
+    </Grid>
   );
 }
-
-const tagItems = [
-  'Tag 1',
-  'Tag 2',
-  'Tag 3',
-  'Tag 4',
-  'Tag 5',
-  'Tag 6',
-  'Tag 7',
-  'Tag 8',
-  'Tag 9',
-  'Tag 10',
-
-];

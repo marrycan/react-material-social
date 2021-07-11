@@ -138,7 +138,7 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    window.location.reload()
+    document.location.href = '/'
     await firebase.auth().signOut();
   };
 

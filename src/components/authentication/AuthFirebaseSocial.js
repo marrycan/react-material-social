@@ -20,7 +20,8 @@ export default function AuthFirebaseSocials() {
 
   const handleLoginFaceBook = async () => {
     try {
-      await loginWithFaceBook();
+      const { user } = await loginWithFaceBook();
+      createUserOnRealTimeDB(user);
     } catch (error) {
       console.error(error);
     }

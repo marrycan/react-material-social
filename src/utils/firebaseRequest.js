@@ -260,16 +260,38 @@ export async function fb_UpdateCurrencyOfUserById(uid, updatedData) {
 }
 
 //------------------------------------------------------------------------
-export async function fb_UpdateTagsOfUserById(uid, updatedData) {
+export async function fb_AddTagsOfUserById(uid, data) {
   const docRef = await firebase
     .firestore()
     .collection("users")
     .doc(uid)
     .get()
-  let data = docRef.data();
-  data.tags = updatedData;
+
+  let updateData = docRef.data();
+  if (updateData.tags) {
+    updateData.tags.push(data);
+  } else {
+    updateData.tags = [];
+    updateData.tags.push(data);
+  }
+
   const updateDocRef = await firebase.firestore().collection("users").doc(uid);
-  return updateDocRef.update(data);
+  return updateDocRef.update(updateData);
+}
+
+//------------------------------------------------------------------------
+export async function fb_UpdateTagsOfUserById(uid, data, index) {
+  const docRef = await firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+
+  let updateData = docRef.data();
+  updateData.tags[index].tag = data.tag;
+
+  const updateDocRef = await firebase.firestore().collection("users").doc(uid);
+  return updateDocRef.update(updateData);
 }
 
 //------------------------------------------------------------------------
@@ -283,4 +305,19 @@ export async function fb_GetTagsOfUser(uid) {
     return docRef.data().tag;
   else
     return []
+}
+
+//------------------------------------------------------------------------
+export async function fb_DeleteTagsOfUserById(uid, index) {
+  const docRef = await firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+
+  let updateData = docRef.data();
+  updateData.tags.splice(index, 1)
+
+  const updateDocRef = await firebase.firestore().collection("users").doc(uid);
+  return updateDocRef.update(updateData);
 }
