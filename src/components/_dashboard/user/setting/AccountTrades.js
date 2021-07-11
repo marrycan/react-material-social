@@ -16,7 +16,6 @@ import {
 
 import AccountImportsTable from "./AccountImportsTable";
 
-
 export default function Account() {
 
   const [confirmDialog, setConfirmDialog] = React.useState(false);

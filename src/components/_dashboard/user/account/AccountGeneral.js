@@ -1,3 +1,4 @@
+import React from "react";
 import * as Yup from "yup";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
@@ -27,8 +28,6 @@ import countries from "../countries";
 //redux
 import { useDispatch } from "../../../../redux/store";
 import { getProfile } from "../../../../redux/slices/user";
-
-import React from "react";
 
 // ----------------------------------------------------------------------
 

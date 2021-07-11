@@ -230,7 +230,6 @@ function AuthProvider({ children }) {
     }
     return
   };
-
   const getFileBlob = (url, cb) => {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
@@ -249,7 +248,7 @@ function AuthProvider({ children }) {
         user: {
           id: auth.uid,
           email: auth.email,
-          photoURL: auth.photoURL || profile?.photoURL,
+          photoURL: profile?.photoURL || auth.photoURL,
           displayName: auth.displayName || profile?.displayName,
           role: ADMIN_EMAILS.includes(auth.email) ? "admin" : "user",
           phoneNumber: auth.phoneNumber || profile?.phoneNumber || "",

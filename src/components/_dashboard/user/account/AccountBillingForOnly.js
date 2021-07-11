@@ -6,7 +6,6 @@ import { Box, Grid, Card, Button, Typography, Stack } from '@material-ui/core';
 import { useSelector, useDispatch } from '../../../../redux/store';
 import {
   getCards,
-  getProfile,
   getNotifications,
   getCustomers,
   getPlans,

@@ -144,10 +144,13 @@ function SettingsProvider({ children }) {
 
   const setSettingOfUser = async (uid) => {
     const docRef = await firebase.firestore().collection("users").doc(uid).get();
-    if (docRef.data().theme)
-      setSettings(docRef.data().theme)
-    else
-      setSettingByDefault()
+    console.log(docRef.data());
+    if (docRef.data()) {
+      if (docRef.data().theme)
+        setSettings(docRef.data().theme)
+      else
+        setSettingByDefault()
+    }
   }
 
   const setSettingByDefault = () => {

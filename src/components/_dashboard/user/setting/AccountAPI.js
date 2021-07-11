@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { useSnackbar } from "notistack";
-import React, { useEffect } from "react";
+import React from "react";
 import { Form, FormikProvider, useFormik } from "formik";
 
 // material
@@ -27,7 +27,6 @@ import { getAPIsOfUser } from "../../../../redux/slices/user"
 import { fb_AddAPIByUserId } from "../../../../utils/firebaseRequest";
 
 // ----------------------------------------------------------------------
-
 
 export default function AccountGeneral() {
     const { accounts } = useSelector((state) => state.user);

@@ -26,15 +26,6 @@ import Page from "../../components/Page";
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 import { AccountGeneral, AccountTrades, AccountAPI, AccountMisc } from "../../components/_dashboard/user/setting";
 
-import Settings from "../../components/settings";
-// import {
-//   AccountGeneral,
-//   AccountBilling,
-//   AccountSocialLinks,
-//   AccountNotifications,
-//   AccountChangePassword,
-// } from "../../components/_dashboard/user/account";
-
 // ----------------------------------------------------------------------
 
 export default function UserSetting() {

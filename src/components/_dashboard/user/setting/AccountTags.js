@@ -89,7 +89,6 @@ export default function AccountTags({ data }) {
   );
 }
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const tagItems = [
   'Tag 1',
   'Tag 2',
