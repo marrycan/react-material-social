@@ -28,8 +28,7 @@ import { useSelector, useDispatch } from '../../../../redux/store';
 import { getProfile } from "../../../../redux/slices/user";
 
 //APIs
-import { stripe_CreateSubscription, stripe_UpdateSubscription } from '../../../../utils/stripeRequest'
-import { fb_AddSubscription, fb_AddAccountByUserId, fb_AddAccountAdjustmentByUserId } from '../../../../utils/firebaseRequest'
+import { fb_AddAccountAdjustmentByUserId } from '../../../../utils/firebaseRequest'
 
 //hooks
 import useAuth from "../../../../hooks/useAuth";
@@ -57,7 +56,6 @@ export default function AccountAdjustmentDialog(props) {
     const { onClose, open } = props;
     const { user } = useAuth();
     const { enqueueSnackbar } = useSnackbar();
-    let { customer, subscription, myProfile } = useSelector((state) => state.user);
 
     const handleCancel = () => {
         onClose();

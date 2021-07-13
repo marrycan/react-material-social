@@ -1,9 +1,6 @@
 import React from "react";
 import { useSnackbar } from "notistack";
-import { Icon } from '@iconify/react';
 // material
-import editFill from '@iconify/icons-eva/edit-2-fill';
-import ReceiptIcon from '@material-ui/icons/Receipt';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
@@ -38,7 +35,8 @@ export default function AccountAdjustmentTable({ id }) {
     const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
     const { accounts, myProfile } = useSelector((state) => state.user);
-    const adjustments = myProfile.adjustment[id] ? myProfile.adjustment[id] : [];
+
+    const adjustments = myProfile.adjustment ? myProfile.adjustment[id] ? myProfile.adjustment[id] : [] : []
     const [state, setState] = React.useState({
         adjustmentOpen: false,
         adjustmentId: '',
@@ -69,14 +67,6 @@ export default function AccountAdjustmentTable({ id }) {
 
     const onCancelEdit = () => {
         setState({ ...state, index: null, open: false, editData: {} })
-    }
-
-    const onAdjustment = (id) => {
-        setState({ ...state, adjustmentOpen: true, accountId: id })
-    }
-
-    const onClose = () => {
-        setState({ ...state, adjustmentOpen: false })
     }
 
     return (
