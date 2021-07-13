@@ -37,8 +37,8 @@ export default function AccountEditDialog({ open, onCancel, data, index }) {
     const dispatch = useDispatch();
 
     const UserAccountSchema = Yup.object().shape({
-        number: Yup.string().required("Account Number is required"),
-        balance: Yup.string().required("Initial Balance is required"),
+        number: Yup.number().required("Account Number is required"),
+        balance: Yup.number().required("Initial Balance is required"),
         description: Yup.string().required("Description is required"),
     });
 
@@ -47,9 +47,7 @@ export default function AccountEditDialog({ open, onCancel, data, index }) {
         initialValues: {
             number: data.number ? data.number : "",
             balance: data.balance ? data.balance : "",
-            description: data.description ? data.description : "",
-            credit_debit: data.credit_debit ? data.credit_debit : "",
-            transaction_dt: data.transaction_dt ? data.transaction_dt : "",
+            description: data.description ? data.description : ""
         },
 
         validationSchema: UserAccountSchema,
@@ -60,8 +58,6 @@ export default function AccountEditDialog({ open, onCancel, data, index }) {
                     number: values.number,
                     balance: values.balance,
                     description: values.description,
-                    credit_debit: values.credit_debit,
-                    transaction_dt: values.transaction_dt
                 }
                 await fb_UpdateAccountsOfUserByIndex(user.id, index, data);
                 dispatch(getAccountsOfUser(user.id));
@@ -86,7 +82,6 @@ export default function AccountEditDialog({ open, onCancel, data, index }) {
 
     return (
         <Dialog open={open} onClose={onCancel} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
             <DialogContent>
                 <FormikProvider value={formik}>
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -117,22 +112,6 @@ export default function AccountEditDialog({ open, onCancel, data, index }) {
                                     {...getFieldProps("description")}
                                     error={Boolean(touched.description && errors.description)}
                                     helperText={touched.description && errors.description}
-                                />
-                            </Stack>
-                            <Stack>
-                                <TextField
-                                    fullWidth
-                                    label="Credit/Debit"
-                                    placeholder="Credit/Debit"
-                                    {...getFieldProps("credit_debit")}
-                                />
-                            </Stack>
-                            <Stack>
-                                <TextField
-                                    fullWidth
-                                    label="Transaction Date"
-                                    placeholder="Transaction Date"
-                                    {...getFieldProps("transaction_dt")}
                                 />
                             </Stack>
                         </Stack>

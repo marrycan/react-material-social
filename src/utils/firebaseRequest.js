@@ -151,6 +151,40 @@ export async function fb_AddAccountByUserId(uid, data) {
 }
 
 //------------------------------------------------------------------------
+export async function fb_AddAccountAdjustmentByUserId(uid, accountId, data) {
+
+  //add created_dt
+  data.created_dt = fDate(new Date());
+
+  //add id
+  data.id = Date.now() + Math.random();
+
+  const docRef = await firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+
+  let updateData = docRef.data();
+  if (updateData.adjustment) {
+    if (updateData.adjustment[accountId]) {
+      updateData.adjustment[accountId].push(data)
+    } else {
+      updateData.adjustment[accountId] = [];
+      updateData.adjustment[accountId].push(data);
+    }
+  } else {
+    updateData.adjustment = {};
+    updateData.adjustment[accountId] = [];
+    updateData.adjustment[accountId].push(data);
+  }
+  console.log(updateData);
+
+  const updateDocRef = await firebase.firestore().collection("users").doc(uid);
+  return updateDocRef.update(updateData);
+}
+
+//------------------------------------------------------------------------
 export async function fb_AddAPIByUserId(uid, data) {
   //add id
   data.id = Date.now() + Math.random();
@@ -317,6 +351,50 @@ export async function fb_DeleteTagsOfUserById(uid, index) {
 
   let updateData = docRef.data();
   updateData.tags.splice(index, 1)
+
+  const updateDocRef = await firebase.firestore().collection("users").doc(uid);
+  return updateDocRef.update(updateData);
+}
+
+//------------------------------------------------------------------------
+export async function fb_UpdateAccountAdjustmentOfUserByIndex(uid, adjustmentId, index, updatedData) {
+  const docRef = await firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+  let data = docRef.data();
+  updatedData.created_dt = data.adjustment[adjustmentId][index].created_dt;
+  data.adjustment[adjustmentId][index] = updatedData;
+  const updateDocRef = await firebase.firestore().collection("users").doc(uid);
+  return updateDocRef.update(data);
+}
+
+//------------------------------------------------------------------------
+export async function fb_DeleteAdjustmentOfUserByIdAndIndex(uid, adjustmentId, index) {
+  const docRef = await firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+
+  let updateData = docRef.data();
+  updateData.adjustment[adjustmentId].splice(index, 1)
+
+  const updateDocRef = await firebase.firestore().collection("users").doc(uid);
+  return updateDocRef.update(updateData);
+}
+
+//------------------------------------------------------------------------
+export async function fb_DeleteAccountOfUserByIndex(uid, index) {
+  const docRef = await firebase
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+
+  let updateData = docRef.data();
+  updateData.account.splice(index, 1)
 
   const updateDocRef = await firebase.firestore().collection("users").doc(uid);
   return updateDocRef.update(updateData);

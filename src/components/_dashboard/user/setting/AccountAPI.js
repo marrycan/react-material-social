@@ -56,7 +56,7 @@ export default function AccountGeneral() {
                 dispatch(getAPIsOfUser(user.id));
                 setSubmitting(false);
                 resetForm();
-                enqueueSnackbar("Added API successfully!", { variant: "success" });
+                enqueueSnackbar("Added Adjustment successfully!", { variant: "success" });
             } catch (error) {
                 enqueueSnackbar("Failed in addding new API", { variant: "error" });
             }

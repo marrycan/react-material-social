@@ -34,6 +34,7 @@ export default function AccountGeneral() {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const [addFlag, setAddFlag] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     if (Object.entries(subscription).length > 0) {
@@ -47,15 +48,9 @@ export default function AccountGeneral() {
     }
   }, [accounts, subscription])
 
-  const UpdateUserSchema1 = Yup.object().shape({
-    model: Yup.string().required("Model is required"),
-    key: Yup.string().required("Key is required"),
-    name: Yup.string().required("Name is required"),
-  });
-
   const UserAccountSchema = Yup.object().shape({
-    number: Yup.string().required("Account Number is required"),
-    balance: Yup.string().required("Initial Balance is required"),
+    number: Yup.number().required("Account Number is required"),
+    balance: Yup.number().required("Initial Balance is required"),
     description: Yup.string().required("Description is required"),
   });
 
@@ -66,7 +61,6 @@ export default function AccountGeneral() {
       balance: "",
       description: ""
     },
-
     validationSchema: UserAccountSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {

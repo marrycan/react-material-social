@@ -47,6 +47,7 @@ export default function Account() {
           <Grid container spacing={3} alignItems="center">
             <Grid item xs={12} sx={{ justifyContent: 'center', display: 'flex' }}>
               <DateRangePicker
+                color="red"
                 style={{ borderRadius: 5 }}
                 ranges={[selectionRange]}
                 onChange={handleSelect}
